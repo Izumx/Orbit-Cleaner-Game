@@ -5,6 +5,7 @@ import { useGame } from './game/store';
 import type { DebrisObject } from './data/types';
 import { ObjectCard } from './ui/ObjectCard';
 import { HUD } from './ui/HUD';
+import { About } from './ui/About';
 
 export default function App() {
   const [objects, setObjects] = useState<DebrisObject[]>([]);
@@ -20,6 +21,7 @@ export default function App() {
       <Scene objects={objects} />
       <ObjectCard objects={objects} />
       <HUD />
+      <About />
     </div>
   );
 }
