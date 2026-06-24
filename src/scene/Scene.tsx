@@ -1,6 +1,7 @@
 import { Suspense, useRef, useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import { Starfield } from './Starfield';
 import { Earth } from './Earth';
@@ -39,6 +40,10 @@ export function Scene({ objects }: Props) {
         onPositions={handlePositions}
       />
       <SelectedMarker index={selectedIndex} positionsRef={positionsRef} />
+      <EffectComposer>
+        <Bloom intensity={0.9} luminanceThreshold={0.2} luminanceSmoothing={0.4} mipmapBlur />
+        <Vignette eskil={false} offset={0.2} darkness={0.9} />
+      </EffectComposer>
       <OrbitControls
         enablePan={false}
         autoRotate
