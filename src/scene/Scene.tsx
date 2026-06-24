@@ -1,19 +1,22 @@
-import { Suspense, useMemo } from 'react';
+import { Suspense, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { Starfield } from './Starfield';
 import { Earth } from './Earth';
 import { DebrisField } from './DebrisField';
+import { SelectedMarker } from './SelectedMarker';
+import { useGame } from '../game/store';
 import type { DebrisObject } from '../data/types';
 
 interface Props {
   objects: DebrisObject[];
-  onSelect: (index: number) => void;
 }
 
-export function Scene({ objects, onSelect }: Props) {
-  const caught = useMemo(() => new Set<string>(), []);
+export function Scene({ objects }: Props) {
+  const positionsRef = useRef<Float32Array | null>(null);
+  const caught = useGame((s) => s.caught);
+  const selectedIndex = useGame((s) => s.selectedIndex);
   return (
     <Canvas
       camera={{ position: [0, 2, 6], fov: 50 }}
@@ -27,7 +30,13 @@ export function Scene({ objects, onSelect }: Props) {
       <Suspense fallback={null}>
         <Earth />
       </Suspense>
-      <DebrisField objects={objects} caught={caught} onSelect={onSelect} />
+      <DebrisField
+        objects={objects}
+        caught={caught}
+        onSelect={(index) => useGame.getState().select(index)}
+        onPositions={(p) => { positionsRef.current = p; }}
+      />
+      <SelectedMarker index={selectedIndex} positionsRef={positionsRef} />
       <OrbitControls
         enablePan={false}
         autoRotate

@@ -22,9 +22,10 @@ interface Props {
   objects: DebrisObject[];
   caught: Set<string>;
   onSelect: (index: number) => void;
+  onPositions?: (p: Float32Array) => void;
 }
 
-export function DebrisField({ objects, caught, onSelect }: Props) {
+export function DebrisField({ objects, caught, onSelect, onPositions }: Props) {
   const pointsRef = useRef<THREE.Points>(null);
   const { positions } = useOrbits(objects, 60);
   const sprite = useMemo(makeSprite, []);
@@ -64,6 +65,7 @@ export function DebrisField({ objects, caught, onSelect }: Props) {
       }
     }
     attr.needsUpdate = true;
+    onPositions?.(positions);
   });
 
   return (
