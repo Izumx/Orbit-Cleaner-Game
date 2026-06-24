@@ -4,12 +4,8 @@ import { EARTH_RADIUS_KM, SCALE_KM_TO_SCENE } from '../config/constants';
 interface Eci { x: number; y: number; z: number }
 
 export function eciToScene(eci: Eci): [number, number, number] {
-  const z = -eci.y * SCALE_KM_TO_SCENE;
-  return [
-    eci.x * SCALE_KM_TO_SCENE,
-    eci.z * SCALE_KM_TO_SCENE,
-    Object.is(z, -0) ? 0 : z,
-  ];
+  const n = (v: number) => v || 0; // converts -0 (and -0.0) to 0; leaves other values unchanged
+  return [n(eci.x * SCALE_KM_TO_SCENE), n(eci.z * SCALE_KM_TO_SCENE), n(-eci.y * SCALE_KM_TO_SCENE)];
 }
 
 export function altitudeKm(eci: Eci): number {
@@ -26,7 +22,7 @@ export function computePositions(satrecs: unknown[], date: Date): Float32Array {
     } catch {
       pos = false;
     }
-    if (pos && Number.isFinite(pos.x)) {
+    if (pos && Number.isFinite(pos.x) && Number.isFinite(pos.y) && Number.isFinite(pos.z)) {
       const [x, y, z] = eciToScene(pos);
       out[i * 3] = x; out[i * 3 + 1] = y; out[i * 3 + 2] = z;
     } else {
