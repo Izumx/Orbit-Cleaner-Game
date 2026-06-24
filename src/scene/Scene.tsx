@@ -1,4 +1,4 @@
-import { Suspense, useRef } from 'react';
+import { Suspense, useRef, useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
@@ -17,6 +17,8 @@ export function Scene({ objects }: Props) {
   const positionsRef = useRef<Float32Array | null>(null);
   const caught = useGame((s) => s.caught);
   const selectedIndex = useGame((s) => s.selectedIndex);
+  const handlePositions = useCallback((p: Float32Array) => { positionsRef.current = p; }, []);
+  const handleSelect = useCallback((index: number) => useGame.getState().select(index), []);
   return (
     <Canvas
       camera={{ position: [0, 2, 6], fov: 50 }}
@@ -33,8 +35,8 @@ export function Scene({ objects }: Props) {
       <DebrisField
         objects={objects}
         caught={caught}
-        onSelect={(index) => useGame.getState().select(index)}
-        onPositions={(p) => { positionsRef.current = p; }}
+        onSelect={handleSelect}
+        onPositions={handlePositions}
       />
       <SelectedMarker index={selectedIndex} positionsRef={positionsRef} />
       <OrbitControls
