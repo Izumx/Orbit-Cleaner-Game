@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import type { DebrisObject } from '../data/types';
@@ -45,6 +45,9 @@ export function DebrisField({ objects, caught, onSelect }: Props) {
     g.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     return g;
   }, [objects.length, colors]);
+
+  useEffect(() => () => geom.dispose(), [geom]);
+  useEffect(() => () => sprite.dispose(), [sprite]);
 
   useFrame(() => {
     if (!positions || !pointsRef.current) return;
