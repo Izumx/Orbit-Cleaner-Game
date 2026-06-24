@@ -12,7 +12,12 @@ self.onmessage = (e: MessageEvent) => {
     }).filter(Boolean);
     (self as unknown as Worker).postMessage({ type: 'ready', count: satrecs.length });
   } else if (msg.type === 'tick') {
-    const buf = computePositions(satrecs, new Date(msg.timeMs));
+    let buf: Float32Array;
+    try {
+      buf = computePositions(satrecs, new Date(msg.timeMs));
+    } catch {
+      buf = new Float32Array(satrecs.length * 3).fill(NaN);
+    }
     (self as unknown as Worker).postMessage(
       { type: 'positions', buffer: buf.buffer },
       [buf.buffer]
