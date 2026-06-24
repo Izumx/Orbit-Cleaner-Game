@@ -18,7 +18,8 @@ describe('propagate', () => {
   it('places ISS at low-earth-orbit altitude', () => {
     const satrec = satellite.twoline2satrec(ISS_L1, ISS_L2);
     const pv = satellite.propagate(satrec, new Date(Date.UTC(2024, 0, 1, 12)));
-    const alt = altitudeKm(pv.position as any);
+    if (!pv || typeof pv.position === 'boolean') throw new Error('propagation failed');
+    const alt = altitudeKm(pv.position);
     expect(alt).toBeGreaterThan(300);
     expect(alt).toBeLessThan(500);
   });
