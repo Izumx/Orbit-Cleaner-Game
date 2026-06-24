@@ -9,7 +9,7 @@ self.onmessage = (e: MessageEvent) => {
     satrecs = (msg.tles as { line1: string; line2: string }[]).map((t) => {
       try { return satellite.twoline2satrec(t.line1, t.line2); }
       catch { return null; }
-    }).filter(Boolean);
+    });
     (self as unknown as Worker).postMessage({ type: 'ready', count: satrecs.length });
   } else if (msg.type === 'tick') {
     let buf: Float32Array;

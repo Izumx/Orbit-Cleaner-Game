@@ -16,7 +16,8 @@ describe('parseTLE', () => {
     expect(objs[0].id).toBe('25544');
     expect(objs[0].category).toBe('satellite');
     expect(objs[1].category).toBe('debris');
-    expect(objs[0].satrec).toBeTruthy();
+    expect(objs[0].line1.startsWith('1 ')).toBe(true);
+    expect(objs[0].line2.startsWith('2 ')).toBe(true);
   });
   it('skips malformed trailing lines', () => {
     const objs = parseTLE(SAMPLE + '\nINCOMPLETE NAME\n1 99999U');

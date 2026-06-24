@@ -1,10 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import * as satellite from 'satellite.js';
 import { generateQuestion } from './questions';
 import type { DebrisObject } from '../data/types';
 
 function makeObj(l1: string, l2: string, name: string): DebrisObject {
-  return { id: '1', name, line1: l1, line2: l2, category: 'debris', satrec: satellite.twoline2satrec(l1, l2) };
+  return { id: '1', name, line1: l1, line2: l2, category: 'debris' };
 }
 const ISS = makeObj(
   '1 25544U 98067A   24001.50000000  .00016717  00000-0  10270-3 0  9005',

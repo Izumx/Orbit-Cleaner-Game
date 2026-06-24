@@ -4,8 +4,9 @@ import { altitudeKm } from '../orbits/propagate';
 
 function currentAltitude(obj: DebrisObject, now: Date): number {
   try {
-    const pv = satellite.propagate(obj.satrec as satellite.SatRec, now);
-    if (pv && pv.position) return Math.round(altitudeKm(pv.position as any));
+    const satrec = satellite.twoline2satrec(obj.line1, obj.line2);
+    const pv = satellite.propagate(satrec, now);
+    if (pv && typeof pv.position !== 'boolean') return Math.round(altitudeKm(pv.position));
   } catch { /* ignore */ }
   return 0;
 }

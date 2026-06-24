@@ -1,4 +1,3 @@
-import * as satellite from 'satellite.js';
 import type { DebrisObject } from './types';
 import { categorizeObject } from './categorize';
 import {
@@ -17,13 +16,7 @@ export function parseTLE(raw: string): DebrisObject[] {
     const l2 = lines[i + 2];
     if (!name || !l1?.startsWith('1 ') || !l2?.startsWith('2 ')) continue;
     const id = l1.substring(2, 7).trim();
-    let satrec: unknown;
-    try {
-      satrec = satellite.twoline2satrec(l1, l2);
-    } catch {
-      continue;
-    }
-    out.push({ id, name, line1: l1, line2: l2, category: categorizeObject(name), satrec });
+    out.push({ id, name, line1: l1, line2: l2, category: categorizeObject(name) });
   }
   return out;
 }

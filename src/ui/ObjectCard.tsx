@@ -20,7 +20,8 @@ export function ObjectCard({ objects }: { objects: DebrisObject[] }) {
   const stats = useMemo(() => {
     if (!obj) return null;
     try {
-      const pv = satellite.propagate(obj.satrec as satellite.SatRec, new Date());
+      const satrec = satellite.twoline2satrec(obj.line1, obj.line2);
+      const pv = satellite.propagate(satrec, new Date());
       if (!pv || typeof pv.position === 'boolean' || typeof pv.velocity === 'boolean') return null;
       const alt = Math.round(altitudeKm(pv.position));
       const v = pv.velocity;

@@ -6,7 +6,6 @@ export interface DebrisObject {
   line1: string;
   line2: string;
   category: Category;
-  satrec: unknown;   // satellite.js SatRec (kept opaque to consumers)
 }
 
 export interface Question {
