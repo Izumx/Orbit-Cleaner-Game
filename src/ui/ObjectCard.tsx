@@ -3,9 +3,9 @@ import * as satellite from 'satellite.js';
 import { useGame } from '../game/store';
 import { generateQuestion } from '../game/questions';
 import { altitudeKm } from '../orbits/propagate';
-import type { DebrisObject } from '../data/types';
+import type { DebrisObject, Category } from '../data/types';
 
-const POINTS: Record<string, number> = { satellite: 10, rocket: 20, debris: 30 };
+const POINTS: Record<Category, number> = { satellite: 10, rocket: 20, debris: 30 };
 
 export function ObjectCard({ objects }: { objects: DebrisObject[] }) {
   const selectedIndex = useGame((s) => s.selectedIndex);
